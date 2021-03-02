@@ -5,12 +5,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Threading.Tasks;
 
 namespace FirstApp
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
 
@@ -22,6 +23,7 @@ namespace FirstApp
                 {
                     var context = services.GetRequiredService<ShopDbContext>();
                     context.Database.Migrate();
+                    await ShopDbSeed.SeedDataAsyn(context);
                 }
                 catch (Exception ex)
                 {
