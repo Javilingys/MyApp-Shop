@@ -1,10 +1,8 @@
-﻿using FirstApp.Interfaces;
-using FirstApp.Models.Data;
+﻿using FirstApp.Application.Interfaces;
+using FirstApp.Application.Services;
+using FirstApp.Domain.Interfaces;
+using FirstApp.Domain.Repositories;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace FirstApp.Extensions
 {
@@ -13,6 +11,7 @@ namespace FirstApp.Extensions
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IProductService, ProductService>();
             return services;
         }
     }

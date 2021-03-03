@@ -1,12 +1,9 @@
-﻿using FirstApp.Models.Entities;
+﻿using FirstApp.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace FirstApp.Models.Config
+
+namespace FirstApp.Domain.EntityFramework.Config
 {
     public class ProductConfiguration : IEntityTypeConfiguration<Product>
     {

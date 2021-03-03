@@ -1,12 +1,9 @@
-﻿using FirstApp.Models.Entities;
+﻿using FirstApp.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 
-namespace FirstApp.Models.Data
+namespace FirstApp.Domain.EntityFramework
 {
     public class ShopDbContext : DbContext
     {
@@ -21,7 +18,7 @@ namespace FirstApp.Models.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            // FirstApp/Models/Config - Directory for configurations
+            // FirstApp.Domain/EntityFramework/Config - Directory for configurations
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
             // конвертирует все в дабл. Как работает не очень понял.

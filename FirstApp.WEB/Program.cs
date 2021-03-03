@@ -1,4 +1,4 @@
-using FirstApp.Models.Data;
+using FirstApp.Domain.EntityFramework;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,24 +13,25 @@ namespace FirstApp
     {
         public static async Task Main(string[] args)
         {
+            //CreateHostBuilder(args).Build().Run();
             var host = CreateHostBuilder(args).Build();
 
             using (var scope = host.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
-                var loggerFactory = services.GetRequiredService<ILoggerFactory>();
-                try
-                {
-                    var context = services.GetRequiredService<ShopDbContext>();
-                    context.Database.Migrate();
-                    await ShopDbSeed.SeedDataAsyn(context);
-                }
-                catch (Exception ex)
-                {
-                    var logger = loggerFactory.CreateLogger<Program>();
-                    logger.LogError(ex, "An error occured during migration");
-                }
-            }
+             {
+                 var services = scope.ServiceProvider;
+                 var loggerFactory = services.GetRequiredService<ILoggerFactory>();
+                 try
+                 {
+                     var context = services.GetRequiredService<ShopDbContext>();
+                     context.Database.Migrate();
+                     await ShopDbSeed.SeedDataAsyn(context);
+                 }
+                 catch (Exception ex)
+                 {
+                     var logger = loggerFactory.CreateLogger<Program>();
+                     logger.LogError(ex, "An error occured during migration");
+                 }
+             }
 
             host.Run();
         }

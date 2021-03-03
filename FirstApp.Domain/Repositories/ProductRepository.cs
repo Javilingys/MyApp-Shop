@@ -1,13 +1,13 @@
-﻿using FirstApp.Interfaces;
-using FirstApp.Models.Entities;
-using Microsoft.AspNetCore.Mvc;
+﻿using FirstApp.Domain.Entities;
+using FirstApp.Domain.EntityFramework;
+using FirstApp.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FirstApp.Models.Data
+namespace FirstApp.Domain.Repositories
 {
     public class ProductRepository : IProductRepository
     {
