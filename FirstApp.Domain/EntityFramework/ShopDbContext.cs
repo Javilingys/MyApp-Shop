@@ -10,6 +10,11 @@ namespace FirstApp.Domain.EntityFramework
         // Products Table
         public DbSet<Product> Products { get; set; }
 
+        public ShopDbContext()
+        {
+
+        }
+
         public ShopDbContext(DbContextOptions options) : base(options)
         {
         }

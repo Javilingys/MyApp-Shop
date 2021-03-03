@@ -10,16 +10,16 @@ namespace FirstApp.Application.Services
 {
     public class ProductService : IProductService
     {
-        private readonly IProductRepository _productRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ProductService(IProductRepository productRepository)
+        public ProductService(IUnitOfWork unitOfWork)
         {
-            _productRepository = productRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<IReadOnlyList<Product>> GetProductsAsync()
         {
-            return await _productRepository.GetProductsAsync();
+            return await _unitOfWork.Products.GetProductsAsync();
         }
     }
 }

@@ -12,6 +12,7 @@ namespace FirstApp.Extensions
         {
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             return services;
         }
     }
