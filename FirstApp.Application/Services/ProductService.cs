@@ -1,4 +1,6 @@
-﻿using FirstApp.Application.Interfaces;
+﻿using AutoMapper;
+using FirstApp.Application.DTOs;
+using FirstApp.Application.Interfaces;
 using FirstApp.Domain.Entities;
 using FirstApp.Domain.Interfaces;
 using System;
@@ -11,15 +13,19 @@ namespace FirstApp.Application.Services
     public class ProductService : IProductService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public ProductService(IUnitOfWork unitOfWork)
+        public ProductService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public async Task<IReadOnlyList<Product>> GetProductsAsync()
+        public async Task<IReadOnlyList<ProductDto>> GetProductsAsync()
         {
-            return await _unitOfWork.Products.GetProductsAsync();
+            var products = await _unitOfWork.Products.GetProductsAsync();
+
+            return _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductDto>>(products);
         }
     }
 }

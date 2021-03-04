@@ -5,6 +5,7 @@ using System.Reflection;
 
 namespace FirstApp.Domain.EntityFramework
 {
+    // Main context of our shop
     public class ShopDbContext : DbContext
     {
         // Products Table

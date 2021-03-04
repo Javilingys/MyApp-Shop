@@ -16,6 +16,10 @@ namespace FirstApp.Controllers
         // GET: Product
         public async Task<IActionResult> Index()
         {
+            // TODO: Delete testData
+            var testData = await _productService.GetProductsAsync();
+            ViewData["testData"]= testData[0]?.Name;
+
             return View(await _productService.GetProductsAsync());
         }
     }

@@ -1,4 +1,4 @@
-﻿using FirstApp.Domain.Entities;
+﻿using FirstApp.Application.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,6 +8,6 @@ namespace FirstApp.Application.Interfaces
 {
     public interface IProductService
     {
-        Task<IReadOnlyList<Product>> GetProductsAsync();
+        Task<IReadOnlyList<ProductDto>> GetProductsAsync();
     }
 }

@@ -1,3 +1,4 @@
+using FirstApp.Application.Helpers;
 using FirstApp.Domain.EntityFramework;
 using FirstApp.Extensions;
 using Microsoft.AspNetCore.Builder;
@@ -31,6 +32,7 @@ namespace FirstApp
             services.AddDbContext<ShopDbContext>(opt => {
                 opt.UseSqlite(_config.GetConnectionString("DefaultConnection"));
             });
+            services.AddAutoMapper(typeof(AutoMapperProfiles));
             services.AddControllersWithViews();
         }
 

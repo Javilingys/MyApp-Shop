@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace FirstApp.Domain.EntityFramework
 {
+    // Seed class
     public class ShopDbSeed
     {
         public static async Task SeedDataAsyn(ShopDbContext context)
