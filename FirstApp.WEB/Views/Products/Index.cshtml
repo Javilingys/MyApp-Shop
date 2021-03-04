@@ -1,15 +1,16 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
+@model IReadOnlyList<ProductDto>
 @{
     ViewData["Title"] = "Products";
 }
 
 <div class="container">
     <ul>
-        @{ if (ViewData["testData"] != null)
+        @{ foreach (var item in Model)
             {
-               <li>@ViewData["testData"]</li>
+                <li>Name: @item.Name Description: @item.Description Price: @item.Price</li>
             }
         }
     </ul>

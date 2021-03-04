@@ -5,28 +5,27 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using FirstApp.Domain.EntityFramework;
 using FirstApp.Domain.Entities;
+using FirstApp.Domain.EntityFramework;
 
-namespace FirstApp.Controllers
+namespace FirstApp.WEB.Controllers
 {
-    // TODO: DELETE CONTROLLER !!!!!!!!
-    public class UselessController : Controller
+    public class AnotherUselessController : Controller
     {
         private readonly ShopDbContext _context;
 
-        public UselessController(ShopDbContext context)
+        public AnotherUselessController(ShopDbContext context)
         {
             _context = context;
         }
 
-        // GET: Products
+        // GET: AnotherUseless
         public async Task<IActionResult> Index()
         {
             return View(await _context.Products.ToListAsync());
         }
 
-        // GET: Products/Details/5
+        // GET: AnotherUseless/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -44,13 +43,13 @@ namespace FirstApp.Controllers
             return View(product);
         }
 
-        // GET: Products/Create
+        // GET: AnotherUseless/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Products/Create
+        // POST: AnotherUseless/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -66,7 +65,7 @@ namespace FirstApp.Controllers
             return View(product);
         }
 
-        // GET: Products/Edit/5
+        // GET: AnotherUseless/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -82,7 +81,7 @@ namespace FirstApp.Controllers
             return View(product);
         }
 
-        // POST: Products/Edit/5
+        // POST: AnotherUseless/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -117,7 +116,7 @@ namespace FirstApp.Controllers
             return View(product);
         }
 
-        // GET: Products/Delete/5
+        // GET: AnotherUseless/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -135,7 +134,7 @@ namespace FirstApp.Controllers
             return View(product);
         }
 
-        // POST: Products/Delete/5
+        // POST: AnotherUseless/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

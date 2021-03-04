@@ -10,15 +10,25 @@ namespace FirstApp.Domain.Repositories
     public class UnitOfWork : IUnitOfWork
     {
         private readonly ShopDbContext _context;
+        private ProductRepository _productRepository;
 
         private bool disposed = false;
 
-        public IProductRepository Products { get; }
+        public IProductRepository Products
+        { 
+            get 
+            { 
+                if (_productRepository == null)
+                {
+                    _productRepository = new ProductRepository(_context);
+                }
+                return _productRepository;
+            }
+        }
 
-        public UnitOfWork(ShopDbContext shopDbContext, IProductRepository productRepository)
+        public UnitOfWork(ShopDbContext shopDbContext)
         {
             _context = shopDbContext;
-            Products = productRepository;
         }
 
         public async Task<int> CompleteAsync()

@@ -1,4 +1,5 @@
 ﻿using FirstApp.Domain.Entities;
+using FirstApp.Domain.Entities.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Reflection;
@@ -10,6 +11,7 @@ namespace FirstApp.Domain.EntityFramework
     {
         // Products Table
         public DbSet<Product> Products { get; set; }
+        public DbSet<AppUser> Users { get; set; }
 
         public ShopDbContext()
         {
