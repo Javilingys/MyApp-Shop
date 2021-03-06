@@ -32,7 +32,7 @@ namespace FirstApp
             services.AddDbContext<ShopDbContext>(opt => {
                 opt.UseSqlite(_config.GetConnectionString("DefaultConnection"));
             });
-            services.AddAutoMapper(typeof(AutoMapperProfiles));
+            services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
             services.AddControllersWithViews();
         }
 
