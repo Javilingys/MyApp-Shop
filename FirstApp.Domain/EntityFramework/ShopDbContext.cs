@@ -8,10 +8,12 @@ using System.Reflection;
 namespace FirstApp.Domain.EntityFramework
 {
     // Main context of our shop
-    public class ShopDbContext : IdentityDbContext
+    public class ShopDbContext : IdentityDbContext<AppUser>
     {
         // Products Table
         public DbSet<Product> Products { get; set; }
+        public DbSet<ProductType> ProductTypes { get; set; }
+        public DbSet<ProductBrand> ProductBrands { get; set; }
 
         public ShopDbContext()
         {
