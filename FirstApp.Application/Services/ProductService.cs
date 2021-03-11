@@ -3,6 +3,7 @@ using FirstApp.Application.DTOs;
 using FirstApp.Application.Interfaces;
 using FirstApp.Domain.Entities;
 using FirstApp.Domain.Interfaces;
+using FirstApp.Domain.Specifications;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -34,12 +35,23 @@ namespace FirstApp.Application.Services
 
         public async Task<IReadOnlyList<ProductDto>> GetProductsAsync()
         {
-            var products = await _productsRepo.ListAllAsync();
+            var spec = new ProductsWithTypesAndBrandsSpecification();
+
+            var products = await _productsRepo.ListAsync(spec);
 
             return _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductDto>>(products);
 
             //var products = await _unitOfWork.Products.GetProductsAsync();
             //return _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductDto>>(products);
+        }
+
+        public async Task<ProductDto> GetProduct(int id)
+        {
+            var spec = new ProductsWithTypesAndBrandsSpecification(id);
+
+            var product = await _productsRepo.GetEntityWithSpec(spec);
+
+            return _mapper.Map<Product, ProductDto>(product);
         }
 
         public async Task<IReadOnlyList<ProductBrand>> GetProductBrandsAsync()
