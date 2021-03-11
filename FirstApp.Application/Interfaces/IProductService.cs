@@ -1,4 +1,5 @@
 ﻿using FirstApp.Application.DTOs;
+using FirstApp.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
