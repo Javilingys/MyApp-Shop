@@ -20,7 +20,7 @@ namespace FirstApp.Domain.Repositories
 
         public async Task<IReadOnlyList<Product>> GetProductsAsync()
         {
-            return await _context.Products.ToListAsync();
+            return await _context.Products.Include(p => p.ProductBrand).ToListAsync();
         }
     }
 }

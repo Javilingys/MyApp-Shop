@@ -1,4 +1,5 @@
 ﻿using FirstApp.Domain.Entities;
+using FirstApp.Domain.Specifications;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,5 +11,7 @@ namespace FirstApp.Domain.Interfaces
     {
         Task<T> GetByIdAsync(int id);
         Task<IReadOnlyList<T>> ListAllAsync();
+        Task<T> GetEntityWithSpec(ISpecification<T> spec);
+        Task<IReadOnlyList<T>> ListAsync(ISpecification<T> spec); 
     }
 }
