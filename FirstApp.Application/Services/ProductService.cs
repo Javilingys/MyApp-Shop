@@ -56,5 +56,39 @@ namespace FirstApp.Application.Services
 
             return productTypes;
         }
+
+        public async Task<Product> CreateProduct(ProductCreateDto productToCreate)
+        {
+            var product = _mapper.Map<ProductCreateDto, Product>(productToCreate);
+            product.PictureUrl = "images/products/placeholder.png";
+
+            _unitOfWork.Repository<Product>().Add(product);
+
+            var result = await _unitOfWork.CompleteAsync();
+
+            return product;
+        }
+
+        public async Task<Product> UpdateProduct(int id, ProductCreateDto productToUpdate)
+        {
+            var product = await _unitOfWork.Repository<Product>().GetByIdAsync(id);
+
+            _mapper.Map(productToUpdate, product);
+
+            _unitOfWork.Repository<Product>().Update(product);
+
+            var result = await _unitOfWork.CompleteAsync();
+
+            return product;
+        }
+
+        public async Task DeleteProduct(int id)
+        {
+            var product = await _unitOfWork.Repository<Product>().GetByIdAsync(id);
+
+            _unitOfWork.Repository<Product>().Delete(product);
+
+            var result = await _unitOfWork.CompleteAsync();
+        }
     }
 }

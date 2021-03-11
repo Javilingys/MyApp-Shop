@@ -20,6 +20,7 @@ namespace FirstApp.Application.Helpers
                 .ForMember(dest => dest.PictureUrl, d => d.MapFrom(x=> string.Concat("~/", x.PictureUrl)));
 
             // FROM dto
+            CreateMap<ProductCreateDto, Product>();
         }
     }
 }
