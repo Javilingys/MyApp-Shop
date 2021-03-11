@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FirstApp.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,11 +8,11 @@ namespace FirstApp.Domain.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {
-        IProductRepository Products { get; }
+        IGenericRepository<TEntity> Repository<TEntity>() where TEntity : BaseEntity;
         /// <summary>
-        /// Save all changes to database
+        /// 
         /// </summary>
-        /// <returns>Count of modified things</returns>
+        /// <returns>Количество изменений</returns>
         Task<int> CompleteAsync();
     }
 }

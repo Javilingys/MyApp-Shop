@@ -15,29 +15,18 @@ namespace FirstApp.Application.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        // временное пристанище, пока ищу реализацию юнит оф ворка.
-        private readonly IGenericRepository<Product> _productsRepo;
-        private readonly IGenericRepository<ProductBrand> _productBrandRepo;
-        private readonly IGenericRepository<ProductType> _productTypeRepo;
 
-        public ProductService(IUnitOfWork unitOfWork, IMapper mapper,
-            IGenericRepository<Product> productsRepo,
-            IGenericRepository<ProductBrand> productBrandRepo,
-            IGenericRepository<ProductType> productTypeRepo
-            )
+        public ProductService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-            this._productsRepo = productsRepo;
-            this._productBrandRepo = productBrandRepo;
-            this._productTypeRepo = productTypeRepo;
         }
 
         public async Task<IReadOnlyList<ProductDto>> GetProductsAsync()
         {
             var spec = new ProductsWithTypesAndBrandsSpecification();
 
-            var products = await _productsRepo.ListAsync(spec);
+            var products = await _unitOfWork.Repository<Product>().ListAsync(spec);
 
             return _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductDto>>(products);
 
@@ -49,21 +38,21 @@ namespace FirstApp.Application.Services
         {
             var spec = new ProductsWithTypesAndBrandsSpecification(id);
 
-            var product = await _productsRepo.GetEntityWithSpec(spec);
+            var product = await _unitOfWork.Repository<Product>().GetEntityWithSpec(spec);
 
             return _mapper.Map<Product, ProductDto>(product);
         }
 
         public async Task<IReadOnlyList<ProductBrand>> GetProductBrandsAsync()
         {
-            var productBrands = await _productBrandRepo.ListAllAsync();
+            var productBrands = await _unitOfWork.Repository<ProductBrand>().ListAllAsync();
 
             return productBrands;
         }
 
         public async Task<IReadOnlyList<ProductType>> GetProductTypesAsync()
         {
-            var productTypes = await _productTypeRepo.ListAllAsync();
+            var productTypes = await _unitOfWork.Repository<ProductType>().ListAllAsync();
 
             return productTypes;
         }

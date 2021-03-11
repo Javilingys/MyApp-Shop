@@ -1,6 +1,8 @@
-﻿using FirstApp.Domain.EntityFramework;
+﻿using FirstApp.Domain.Entities;
+using FirstApp.Domain.EntityFramework;
 using FirstApp.Domain.Interfaces;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,25 +12,12 @@ namespace FirstApp.Domain.Repositories
     public class UnitOfWork : IUnitOfWork
     {
         private readonly ShopDbContext _context;
-        private ProductRepository _productRepository;
+        // все репозитории будут храниться тут во вермя выполнение юнит оф ворка
+        private Hashtable _repositories;
 
-        private bool disposed = false;
-
-        public IProductRepository Products
-        { 
-            get 
-            { 
-                if (_productRepository == null)
-                {
-                    _productRepository = new ProductRepository(_context);
-                }
-                return _productRepository;
-            }
-        }
-
-        public UnitOfWork(ShopDbContext shopDbContext)
+        public UnitOfWork(ShopDbContext context)
         {
-            _context = shopDbContext;
+            _context = context;
         }
 
         public async Task<int> CompleteAsync()
@@ -36,22 +25,32 @@ namespace FirstApp.Domain.Repositories
             return await _context.SaveChangesAsync();
         }
 
-        protected virtual void Dispose(bool disposing) 
-        {
-            if (!this.disposed)
-            {
-                if (disposing)
-                {
-                    _context.Dispose();
-                }
-            }
-            this.disposed = true;
-        }
-
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            _context.Dispose();
+        }
+
+        public IGenericRepository<TEntity> Repository<TEntity>() where TEntity : BaseEntity
+        {
+            // если репозитория еще не было, то инициализуруем хештейбл
+            if (_repositories == null) _repositories = new Hashtable();
+
+            // получаем имя дженерик типа
+            var type = typeof(TEntity).Name;
+
+            // если нет такого репозитория, то ...
+            if (!_repositories.ContainsKey(type))
+            {
+                // .. тип для создания инстанса
+                var repositoryType = typeof(GenericRepository<>);
+                // создаем интсанс дженерик репозитория и передаем внутрь контекст
+                var repositoryInstance = Activator.CreateInstance(
+                    repositoryType.MakeGenericType(typeof(TEntity)), _context);
+
+                _repositories.Add(type, repositoryInstance);
+            }
+
+            return (IGenericRepository<TEntity>) _repositories[type];
         }
     }
 }
