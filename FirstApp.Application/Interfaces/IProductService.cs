@@ -11,8 +11,8 @@ namespace FirstApp.Application.Interfaces
     {
         Task<IReadOnlyList<ProductDto>> GetProductsAsync();
         Task<ProductDto> GetProduct(int id);
-        Task<IReadOnlyList<ProductBrand>> GetProductBrandsAsync();
-        Task<IReadOnlyList<ProductType>> GetProductTypesAsync();
+        Task<IReadOnlyList<ProductBrandDto>> GetProductBrandsAsync();
+        Task<IReadOnlyList<ProductTypeDto>> GetProductTypesAsync();
         Task<Product> CreateProduct(ProductCreateDto productToCreate);
         Task<Product> UpdateProduct(int id, ProductCreateDto productToUpdate);
         Task DeleteProduct(int id);

@@ -19,6 +19,9 @@ namespace FirstApp.Application.Helpers
                     opt => opt.MapFrom(prod => prod.ProductType.Name))
                 .ForMember(dest => dest.PictureUrl, d => d.MapFrom(x=> string.Concat("~/", x.PictureUrl)));
 
+            CreateMap<ProductBrand, ProductBrandDto>();
+            CreateMap<ProductType, ProductTypeDto>();
+
             // FROM dto
             CreateMap<ProductCreateDto, Product>();
         }

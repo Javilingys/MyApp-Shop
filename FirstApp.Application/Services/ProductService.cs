@@ -47,19 +47,19 @@ namespace FirstApp.Application.Services
         }
 
         // получить список брендов
-        public async Task<IReadOnlyList<ProductBrand>> GetProductBrandsAsync()
+        public async Task<IReadOnlyList<ProductBrandDto>> GetProductBrandsAsync()
         {
             var productBrands = await _unitOfWork.Repository<ProductBrand>().ListAllAsync();
 
-            return productBrands;
+            return _mapper.Map<IReadOnlyList<ProductBrand>, IReadOnlyList<ProductBrandDto>>(productBrands);
         }
 
         // получить список типов продуктв
-        public async Task<IReadOnlyList<ProductType>> GetProductTypesAsync()
+        public async Task<IReadOnlyList<ProductTypeDto>> GetProductTypesAsync()
         {
             var productTypes = await _unitOfWork.Repository<ProductType>().ListAllAsync();
 
-            return productTypes;
+            return _mapper.Map<IReadOnlyList<ProductType>,IReadOnlyList<ProductTypeDto>>(productTypes);
         }
 
         // Создать продуктв

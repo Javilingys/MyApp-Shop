@@ -190,27 +190,27 @@ namespace FirstApp.Domain.EntityFramework
                 new ProductBrand
                 {
                     Id = 2,
-                    Name = "Angular"
+                    Name = "NetCore"
                 },
                 new ProductBrand
                 {
                     Id = 3,
-                    Name = "Angular"
+                    Name = "VS Code"
                 },
                 new ProductBrand
                 {
                     Id = 4,
-                    Name = "Angular"
+                    Name = "React"
                 },
                 new ProductBrand
                 {
                     Id = 5,
-                    Name = "Angular"
+                    Name = "Typescript"
                 },
                 new ProductBrand
                 {
                     Id = 6,
-                    Name = "Angular"
+                    Name = "Redis"
                 }
             };
 

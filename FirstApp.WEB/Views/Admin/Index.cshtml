@@ -35,7 +35,7 @@
                             </td>
                             <td class="align-middle"><h5>@product.Name</h5></td>
                             <td class="align-middle">$@product.Price</td>
-                            <td class="align-middle"><button class="btn btn-warning">Edit</button></td>
+                            <td class="align-middle"><a asp-action="Edit" asp-route-id="@product.Id" class="btn btn-warning">Edit</a></td>
                             <td class="align-middle"><button class="btn btn-danger">Delete</button></td>
                         </tr>
                     </tbody>
