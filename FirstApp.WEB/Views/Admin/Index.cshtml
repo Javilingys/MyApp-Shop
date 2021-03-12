@@ -1,4 +1,4 @@
-﻿
+﻿@model IReadOnlyList<ProductDto>
 @{
     ViewData["Title"] = "Admin";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -9,34 +9,44 @@
         <header class="h2">Product List</header>
         <button class="btn btn-outline-success">Create new product</button>
     </div>
+    @if (Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" class="p-2">Id</th>
+                        <th scope="col" class="p-2 text-uppercase">Product</th>
+                        <th scope="col" class="p-2 text-uppercase">Name</th>
+                        <th scope="col" class="p-2 text-uppercase">Price</th>
+                        <th scope="col" class="p-2 text-uppercase">Edit</th>
+                        <th scope="col" class="p-2 text-uppercase">Delete</th>
+                    </tr>
+                </thead>
+                @foreach (ProductDto product in Model)
+                {
+                    <tbody>
+                        <tr>
+                            <th class="align-middle">@product.Id</th>
+                            <td>
+                                <div class="p-2">
+                                    <img src="@Url.Content(product.PictureUrl)" alt="placeholder" class="img-fluid" style="max-height: 50px" />
+                                </div>
+                            </td>
+                            <td class="align-middle"><h5>@product.Name</h5></td>
+                            <td class="align-middle">$@product.Price</td>
+                            <td class="align-middle"><button class="btn btn-warning">Edit</button></td>
+                            <td class="align-middle"><button class="btn btn-danger">Delete</button></td>
+                        </tr>
+                    </tbody>
+                }
+            </table>
+        </div>
+    }
+    else
+    {
+        <p class="text-center h2">No products in inventory</p>
+    }
 
-    <div class="table-responsive">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col" class="p-2">Id</th>
-                    <th scope="col" class="p-2 text-uppercase">Product</th>
-                    <th scope="col" class="p-2 text-uppercase">Name</th>
-                    <th scope="col" class="p-2 text-uppercase">Price</th>
-                    <th scope="col" class="p-2 text-uppercase">Edit</th>
-                    <th scope="col" class="p-2 text-uppercase">Delete</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th class="align-middle">1</th>
-                    <td>
-                        <div class="p-2">
-                            <img  src="~/images/products/placeholder.png" alt="placeholder" class="img-fluid" style="max-height: 50px" />
-                        </div>
-                    </td>
-                    <td class="align-middle"><h5>Product Name here</h5></td>
-                    <td class="align-middle">$180</td>
-                    <td class="align-middle"><button class="btn btn-warning">Edit</button></td>
-                    <td class="align-middle"><button class="btn btn-danger">Delete</button></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
 </div>
 

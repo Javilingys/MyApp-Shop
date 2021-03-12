@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FirstApp.Application.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,11 +9,16 @@ namespace FirstApp.WEB.Controllers
 {
     public class AdminController : Controller
     {
+        private readonly IProductService _productService;
 
-
-        public IActionResult Index()
+        public AdminController(IProductService productService)
         {
-            return View();
+            _productService = productService;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            return View(await _productService.GetProductsAsync());
         }
     }
 }
