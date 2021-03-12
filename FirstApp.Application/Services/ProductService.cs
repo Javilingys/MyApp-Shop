@@ -22,8 +22,10 @@ namespace FirstApp.Application.Services
             _mapper = mapper;
         }
 
+        // Получение списка всех продуктов
         public async Task<IReadOnlyList<ProductDto>> GetProductsAsync()
         {
+            // Продукты, включая тип и бренд
             var spec = new ProductsWithTypesAndBrandsSpecification();
 
             var products = await _unitOfWork.Repository<Product>().ListAsync(spec);
@@ -34,6 +36,7 @@ namespace FirstApp.Application.Services
             //return _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductDto>>(products);
         }
 
+        // получить продукт по id
         public async Task<ProductDto> GetProduct(int id)
         {
             var spec = new ProductsWithTypesAndBrandsSpecification(id);
@@ -43,6 +46,7 @@ namespace FirstApp.Application.Services
             return _mapper.Map<Product, ProductDto>(product);
         }
 
+        // получить список брендов
         public async Task<IReadOnlyList<ProductBrand>> GetProductBrandsAsync()
         {
             var productBrands = await _unitOfWork.Repository<ProductBrand>().ListAllAsync();
@@ -50,6 +54,7 @@ namespace FirstApp.Application.Services
             return productBrands;
         }
 
+        // получить список типов продуктв
         public async Task<IReadOnlyList<ProductType>> GetProductTypesAsync()
         {
             var productTypes = await _unitOfWork.Repository<ProductType>().ListAllAsync();
@@ -57,6 +62,7 @@ namespace FirstApp.Application.Services
             return productTypes;
         }
 
+        // Создать продуктв
         public async Task<Product> CreateProduct(ProductCreateDto productToCreate)
         {
             var product = _mapper.Map<ProductCreateDto, Product>(productToCreate);
@@ -69,6 +75,7 @@ namespace FirstApp.Application.Services
             return product;
         }
 
+        // Отредактировать продуктв
         public async Task<Product> UpdateProduct(int id, ProductCreateDto productToUpdate)
         {
             var product = await _unitOfWork.Repository<Product>().GetByIdAsync(id);
@@ -82,6 +89,7 @@ namespace FirstApp.Application.Services
             return product;
         }
 
+        // Удалить продукт
         public async Task DeleteProduct(int id)
         {
             var product = await _unitOfWork.Repository<Product>().GetByIdAsync(id);

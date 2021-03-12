@@ -10,5 +10,11 @@ namespace FirstApp.Application.Interfaces
     public interface IProductService
     {
         Task<IReadOnlyList<ProductDto>> GetProductsAsync();
+        Task<ProductDto> GetProduct(int id);
+        Task<IReadOnlyList<ProductBrand>> GetProductBrandsAsync();
+        Task<IReadOnlyList<ProductType>> GetProductTypesAsync();
+        Task<Product> CreateProduct(ProductCreateDto productToCreate);
+        Task<Product> UpdateProduct(int id, ProductCreateDto productToUpdate);
+        Task DeleteProduct(int id);
     }
 }
