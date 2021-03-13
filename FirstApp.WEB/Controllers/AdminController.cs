@@ -91,5 +91,38 @@ namespace FirstApp.WEB.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+
+        // GET: AnotherUseless/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var product = await _productService.GetProduct(id.Value);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return View(product);
+        }
+
+        // POST: AnotherUseless/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (id == 0)
+            {
+                return NotFound();
+            }
+
+            await _productService.DeleteProduct(id);
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
