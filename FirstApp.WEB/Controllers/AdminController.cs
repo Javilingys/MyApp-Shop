@@ -29,6 +29,27 @@ namespace FirstApp.WEB.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Create()
+        {
+            ViewBag.Brands = new SelectList(await _productService.GetProductBrandsAsync(), "Id", "Name");
+            ViewBag.Types = new SelectList(await _productService.GetProductTypesAsync(), "Id", "Name");
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(ProductEditViewModel productCreateVM)
+        {
+            if (ModelState.IsValid)
+            {
+                var createDto = _mapper.Map<ProductEditViewModel, ProductCreateDto>(productCreateVM);
+                await _productService.CreateProduct(createDto);
+                return RedirectToAction(nameof(Index));
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -56,12 +77,6 @@ namespace FirstApp.WEB.Controllers
                 ProductTypeId = productTypes.Where(t => t.Name == product.ProductType).Select(t => t.Id).FirstOrDefault(),
                 ProductDto = product
             });
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<ProductBrandDto>> BrandTest()
-        {
-            return Ok(await _productService.GetProductBrandsAsync());
         }
 
         [HttpPost]
