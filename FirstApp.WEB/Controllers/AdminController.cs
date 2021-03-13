@@ -1,6 +1,10 @@
-﻿using FirstApp.Application.DTOs;
+﻿using AutoMapper;
+using FirstApp.Application.DTOs;
 using FirstApp.Application.Interfaces;
+using FirstApp.Domain.Entities;
+using FirstApp.WEB.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +15,12 @@ namespace FirstApp.WEB.Controllers
     public class AdminController : Controller
     {
         private readonly IProductService _productService;
+        private readonly IMapper _mapper;
 
-        public AdminController(IProductService productService)
+        public AdminController(IProductService productService, IMapper mapper)
         {
             _productService = productService;
+            _mapper = mapper;
         }
 
         public async Task<IActionResult> Index()
@@ -36,41 +42,39 @@ namespace FirstApp.WEB.Controllers
                 return NotFound();
             }
 
-            ViewBag.Brands = await _productService.GetProductBrandsAsync();
-            ViewBag.Types = await _productService.GetProductTypesAsync();
+            var productBrands = await _productService.GetProductBrandsAsync();
+            var productTypes = await _productService.GetProductTypesAsync();
 
-            return View(product);
+            ViewBag.Brands = new SelectList(await _productService.GetProductBrandsAsync(), "Id", "Name");
+            ViewBag.Types = new SelectList(await _productService.GetProductTypesAsync(), "Id", "Name");
+
+
+
+            return View(new ProductEditViewModel
+            {
+                ProductBrandId = productBrands.Where(b => b.Name == product.ProductBrand).Select(b => b.Id).FirstOrDefault(),
+                ProductTypeId = productTypes.Where(t => t.Name == product.ProductType).Select(t => t.Id).FirstOrDefault(),
+                ProductDto = product
+            });
         }
 
-        //TODO DELETE
         [HttpGet]
-        public async Task<ActionResult<ProductBrandDto>> TestBrands()
+        public async Task<ActionResult<ProductBrandDto>> BrandTest()
         {
-
             return Ok(await _productService.GetProductBrandsAsync());
-        }
-
-        //TODO DELETE
-        [HttpGet]
-        public async Task<ActionResult<ProductBrandDto>> TestProducts()
-        {
-
-            return Ok(await _productService.GetProductsAsync());
-        }
-
-        //TODO DELETE
-        [HttpGet]
-        public async Task<ActionResult<ProductBrandDto>> TestTypes()
-        {
-
-            return Ok(await _productService.GetProductTypesAsync());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, ProductCreateDto productCreateDto)
+        public async Task<IActionResult> Edit(int id, ProductEditViewModel productViewModel)
         {
-            return Ok();
+            if (ModelState.IsValid)
+            {
+                var createDto = _mapper.Map<ProductEditViewModel, ProductCreateDto>(productViewModel);
+                await _productService.UpdateProduct(id, createDto);
+                return RedirectToAction(nameof(Index));
+            }
+            return RedirectToAction(nameof(Index));
         }
     }
 }

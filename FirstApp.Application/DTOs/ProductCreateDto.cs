@@ -17,8 +17,8 @@ namespace FirstApp.Application.DTOs
         public decimal Price { get; set; }
         public string PictureUrl { get; set; }
         [Required]
-        public string ProductBrand { get; set; }
+        public int ProductBrandId { get; set; }
         [Required]
-        public string ProductType { get; set; }
+        public int ProductTypeId { get; set; }
     }
 }
