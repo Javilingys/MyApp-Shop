@@ -20,13 +20,16 @@ namespace FirstApp.WEB.Controllers
     {
         private readonly IProductService _productService;
         private readonly IMapper _mapper;
-        private readonly RoleManager<IdentityRole> roleManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<AppUser> _userManager;
 
-        public AdminController(IProductService productService, IMapper mapper, RoleManager<IdentityRole> roleManager)
+        public AdminController(IProductService productService, IMapper mapper, RoleManager<IdentityRole> roleManager,
+            UserManager<AppUser> userManager)
         {
             _productService = productService;
             _mapper = mapper;
-            this.roleManager = roleManager;
+            _roleManager = roleManager;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> Index()
@@ -153,7 +156,7 @@ namespace FirstApp.WEB.Controllers
                     Name = model.RoleName
                 };
 
-                IdentityResult result = await roleManager.CreateAsync(identityRole);
+                IdentityResult result = await _roleManager.CreateAsync(identityRole);
 
                 if (result.Succeeded)
                 {
@@ -172,8 +175,65 @@ namespace FirstApp.WEB.Controllers
         [HttpGet]
         public IActionResult ListRoles()
         {
-            var roles = roleManager.Roles;
+            var roles = _roleManager.Roles;
             return View(roles);
+        }
+
+        // При нажатие на кнопку изменить роль в вьюхе списков, рдиериктится сюда. Формируется роль для редактирования и передается во вьюху редактирования.
+        [HttpGet]
+        public async Task<IActionResult> EditRole(string id)
+        {
+            var role = await _roleManager.FindByIdAsync(id);
+
+            if (role == null)
+            {
+                return NotFound();
+            }
+
+            var model = new EditRoleViewModel
+            {
+                Id = role.Id,
+                RoleName = role.Name
+            };
+
+            foreach (var user in _userManager.Users)
+            {
+                if (await _userManager.IsInRoleAsync(user, role.Name))
+                {
+                    model.Users.Add(user.UserName);
+                }
+            }
+
+            return View(model);
+        }
+
+        //  Вызывается после венесения изменений в форме едита и нажатия на кнопку сабмит формы едита
+        [HttpPost]
+        public async Task<IActionResult> EditRole(EditRoleViewModel model)
+        {
+            var role = await _roleManager.FindByIdAsync(model.Id);
+
+            if (role == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                role.Name = model.RoleName;
+                var result = await _roleManager.UpdateAsync(role);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("ListRoles");
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+
+                return View(model);
+            }
         }
     }
 }
