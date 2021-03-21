@@ -304,11 +304,11 @@ namespace FirstApp.WEB.Controllers
                     if (i < (model.Count - 1))
                         continue;
                     else
-                        return RedirectToAction("EditTole", new { Id = roleId });
+                        return RedirectToAction("EditRole", new { Id = roleId });
                 }
             }
 
-            return RedirectToAction("EditTole", new { Id = roleId });
+            return RedirectToAction("EditRole", new { Id = roleId });
         }
     }
 }

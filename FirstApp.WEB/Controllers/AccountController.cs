@@ -28,7 +28,7 @@ namespace FirstApp.WEB.Controllers
         }
 
         [AcceptVerbs("Get", "Post")]
-        public async Task<IActionResult> IsEmailUse(string email)
+        public async Task<IActionResult> IsEmailInUse(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
 
