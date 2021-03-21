@@ -3,6 +3,7 @@ using FirstApp.Application.DTOs;
 using FirstApp.Application.Interfaces;
 using FirstApp.Domain.Entities;
 using FirstApp.WEB.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace FirstApp.WEB.Controllers
 {
+    [Authorize]
     public class AdminController : Controller
     {
         private readonly IProductService _productService;
