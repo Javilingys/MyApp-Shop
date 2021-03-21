@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace FirstApp.WEB.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly IProductService _productService;
