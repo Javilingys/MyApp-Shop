@@ -1,5 +1,5 @@
-﻿using FirstApp.Application.DTOs;
-using FirstApp.Domain.Entities.Identity;
+﻿using FirstApp.Domain.Entities.Identity;
+using FirstApp.WEB.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -25,6 +25,21 @@ namespace FirstApp.WEB.Controllers
         public IActionResult Register()
         {
             return View();
+        }
+
+        [AcceptVerbs("Get", "Post")]
+        public async Task<IActionResult> IsEmailUse(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user == null)
+            {
+                return Json(true);
+            }
+            else
+            {
+                return Json($"Email {email} is already in use");
+            }
         }
 
         [HttpPost]
@@ -61,7 +76,7 @@ namespace FirstApp.WEB.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(UserLoginDto loginModel)
+        public async Task<IActionResult> Login(UserLoginDto loginModel, string returnUrl)
         {
             if (ModelState.IsValid)
             {
@@ -70,7 +85,15 @@ namespace FirstApp.WEB.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("index", "home");
+                    if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                    {
+                        // prevern open redirect attack
+                        return LocalRedirect(returnUrl);
+                    }
+                    else
+                    {
+                        return RedirectToAction("index", "home");
+                    }
                 }
 
                 ModelState.AddModelError(string.Empty, "Invalid login attempt");

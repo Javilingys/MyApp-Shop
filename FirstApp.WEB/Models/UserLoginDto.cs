@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace FirstApp.Application.DTOs
+namespace FirstApp.WEB.Models
 {
     public class UserLoginDto
     {
