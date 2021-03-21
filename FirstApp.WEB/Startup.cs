@@ -1,9 +1,11 @@
+using FirstApp.Domain.Entities.Identity;
 using FirstApp.Domain.EntityFramework;
 using FirstApp.Extensions;
 using FirstApp.WEB.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,6 +35,20 @@ namespace FirstApp
                 opt.UseSqlite(_config.GetConnectionString("DefaultConnection"));
             });
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
+
+            services.AddIdentity<AppUser, IdentityRole>(options =>
+            {
+                options.Password.RequiredLength = 8;
+            }).AddEntityFrameworkStores<ShopDbContext>();
+
+
+            /* Можно так, а можно как выше 
+ 
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequiredLength = 8;
+            });*/
+
             services.AddControllersWithViews(); //test
         }
 
@@ -54,7 +70,9 @@ namespace FirstApp
 
             app.UseRouting();
 
+            // identity middleware
             app.UseAuthentication();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

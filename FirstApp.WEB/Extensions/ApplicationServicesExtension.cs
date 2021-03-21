@@ -1,7 +1,10 @@
 ﻿using FirstApp.Application.Interfaces;
 using FirstApp.Application.Services;
+using FirstApp.Domain.Entities.Identity;
+using FirstApp.Domain.EntityFramework;
 using FirstApp.Domain.Interfaces;
 using FirstApp.Domain.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace FirstApp.Extensions
@@ -14,6 +17,7 @@ namespace FirstApp.Extensions
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
             return services;
         }
     }
