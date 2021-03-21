@@ -2,8 +2,10 @@
 using FirstApp.Application.DTOs;
 using FirstApp.Application.Interfaces;
 using FirstApp.Domain.Entities;
+using FirstApp.Domain.Entities.Identity;
 using FirstApp.WEB.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -18,16 +20,50 @@ namespace FirstApp.WEB.Controllers
     {
         private readonly IProductService _productService;
         private readonly IMapper _mapper;
+        private readonly RoleManager<IdentityRole> roleManager;
 
-        public AdminController(IProductService productService, IMapper mapper)
+        public AdminController(IProductService productService, IMapper mapper, RoleManager<IdentityRole> roleManager)
         {
             _productService = productService;
             _mapper = mapper;
+            this.roleManager = roleManager;
         }
 
         public async Task<IActionResult> Index()
         {
             return View(await _productService.GetProductsAsync());
+        }
+
+        [HttpGet]
+        public IActionResult CreateRole()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateRole(CreateRoleViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                IdentityRole identityRole = new IdentityRole
+                {
+                    Name = model.RoleName
+                };
+
+                IdentityResult result = await roleManager.CreateAsync(identityRole);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("index", "home");
+                }
+
+                foreach (IdentityError error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+            }
+
+            return View(model);
         }
 
         [HttpGet]
