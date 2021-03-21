@@ -35,38 +35,6 @@ namespace FirstApp.WEB.Controllers
         }
 
         [HttpGet]
-        public IActionResult CreateRole()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> CreateRole(CreateRoleViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                IdentityRole identityRole = new IdentityRole
-                {
-                    Name = model.RoleName
-                };
-
-                IdentityResult result = await roleManager.CreateAsync(identityRole);
-
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("index", "home");
-                }
-
-                foreach (IdentityError error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
-            }
-
-            return View(model);
-        }
-
-        [HttpGet]
         public async Task<IActionResult> Create()
         {
             ViewBag.Brands = new SelectList(await _productService.GetProductBrandsAsync(), "Id", "Name");
@@ -161,6 +129,51 @@ namespace FirstApp.WEB.Controllers
             await _productService.DeleteProduct(id);
 
             return RedirectToAction(nameof(Index));
+        }
+
+
+
+        /*
+         ROLE STUFF
+        */         
+
+        [HttpGet]
+        public IActionResult CreateRole()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateRole(CreateRoleViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                IdentityRole identityRole = new IdentityRole
+                {
+                    Name = model.RoleName
+                };
+
+                IdentityResult result = await roleManager.CreateAsync(identityRole);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("ListRoles", "Admin");
+                }
+
+                foreach (IdentityError error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+            }
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult ListRoles()
+        {
+            var roles = roleManager.Roles;
+            return View(roles);
         }
     }
 }
